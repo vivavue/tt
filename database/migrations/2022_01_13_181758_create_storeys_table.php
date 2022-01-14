@@ -15,6 +15,7 @@ class CreateStoreysTable extends Migration
     {
         Schema::create('storeys', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

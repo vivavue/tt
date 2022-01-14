@@ -14,5 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+        $this->call(HouseSeeder::class);
+        $this->call(BathroomSeeder::class);
+        $this->call(BedroomSeeder::class);
+
+        $this->call(GarageSeeder::class);
+        $this->call(StoreySeeder::class);
     }
 }

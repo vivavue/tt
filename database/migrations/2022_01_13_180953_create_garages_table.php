@@ -15,6 +15,7 @@ class CreateGaragesTable extends Migration
     {
         Schema::create('garages', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

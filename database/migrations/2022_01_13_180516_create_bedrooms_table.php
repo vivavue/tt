@@ -15,6 +15,7 @@ class CreateBedroomsTable extends Migration
     {
         Schema::create('bedrooms', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
