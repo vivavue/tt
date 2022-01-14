@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\House;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Storey extends Model
 {
     use HasFactory;
+
+    public function houses()
+    {
+        return $this->hasMany(House::class);
+    }
 }

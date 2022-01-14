@@ -5,6 +5,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en'
 import router from './router'
 Vue.use(ElementUI, { locale })
+
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
 new Vue({
     el: '#app',
     router,

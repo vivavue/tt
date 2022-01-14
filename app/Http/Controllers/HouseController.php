@@ -14,7 +14,7 @@ class HouseController extends Controller
      */
     public function index()
     {
-        $houses = House::all();
+        $houses = House::with(['bedroom', 'bathroom', 'storey', 'garage'])->get();
 
         return response()->json($houses);
     }

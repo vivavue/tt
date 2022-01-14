@@ -22,12 +22,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      loading: true,
-      is_null: false
+      houses: [],
+      loading: false,
+      showData: false
     };
+  },
+  created: function created() {
+    this.getHouses();
+  },
+  methods: {
+    getHouses: function getHouses() {
+      var _this = this;
+
+      this.loading = true;
+      this.showData = false;
+      this.axios.get("/api/houses").then(function (response) {
+        _this.showData = response.data.length == 0;
+        _this.houses = response.data;
+        _this.loading = false;
+      });
+    }
   }
 });
 
@@ -117,26 +160,75 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h1", [_vm._v("houses")]),
-    _vm._v(" "),
-    _vm.loading
-      ? _c("div", { staticClass: "text-center mt-5 mb-5" }, [
-          _c("div", {
-            staticClass: "spinner-border text-primary",
-            attrs: { role: "status" },
-          }),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.is_null
-      ? _c("div", { staticClass: "text-center mt-5 mb-5" }, [
-          _c("h2", [_vm._v("no data")]),
-        ])
-      : _vm._e(),
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        !_vm.loading && !_vm.showData
+          ? _c("table", { staticClass: "mt-5 table table-bordered" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.houses, function (house) {
+                  return _c("tr", { key: house.id }, [
+                    _c("td", [_vm._v(_vm._s(house.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(house.price))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(house.bedroom.quantity))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(house.bathroom.quantity))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(house.storey.quantity))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(house.garage.quantity))]),
+                  ])
+                }),
+                0
+              ),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.loading
+          ? _c("div", { staticClass: "text-center mt-5 mb-5" }, [
+              _c("div", {
+                staticClass: "spinner-border text-primary",
+                attrs: { role: "status" },
+              }),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.showData
+          ? _c("div", { staticClass: "text-center mt-5 mb-5" }, [
+              _c("h2", [_vm._v("No data")]),
+            ])
+          : _vm._e(),
+      ]),
+    ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Bedrooms")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Bathrooms")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Storeys")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Garages")]),
+      ]),
+    ])
+  },
+]
 render._withStripped = true
 
 
