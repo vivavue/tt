@@ -1,8 +1,12 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
+      <div class="my-3 col-md-2">
+        <input type="text" v-model="search" placeholder="Name search..." />
+      </div>
+      <div class="my-3 col-md-10">slider</div>
       <div class="col-md-12">
-        <table class="mt-5 table table-bordered" v-if="!loading && !showData">
+        <table class="table table-bordered" v-if="!loading && !showData">
           <thead>
             <tr>
               <th>Name</th>
@@ -42,21 +46,27 @@ export default {
       houses: [],
       loading: false,
       showData: false,
+      search: "",
     };
   },
-  created() {
-    this.getHouses();
+  watch: {
+    search: function (value) {
+      return this.getHouses();
+    },
   },
   methods: {
     getHouses() {
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses").then((response) => {
+      this.axios.get("/api/houses?q=" + this.search).then((response) => {
         this.showData = response.data.length == 0;
         this.houses = response.data;
         this.loading = false;
       });
     },
+  },
+  mounted() {
+    this.getHouses();
   },
 };
 </script>

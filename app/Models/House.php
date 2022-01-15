@@ -32,4 +32,18 @@ class House extends Model
     {
         return $this->belongsTo(Storey::class);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('name', 'like', $term);
+        });
+    }
+
+    public function scopeHousesQuery($query)
+    {
+        $search_term = request('q', '');
+        $query->with(['bedroom', 'bathroom', 'storey', 'garage'])->search(trim($search_term))->get();
+    }
 }

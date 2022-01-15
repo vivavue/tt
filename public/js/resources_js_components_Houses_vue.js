@@ -48,16 +48,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       houses: [],
       loading: false,
-      showData: false
+      showData: false,
+      search: ""
     };
   },
-  created: function created() {
-    this.getHouses();
+  watch: {
+    search: function search(value) {
+      return this.getHouses();
+    }
   },
   methods: {
     getHouses: function getHouses() {
@@ -65,12 +72,15 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses").then(function (response) {
+      this.axios.get("/api/houses?q=" + this.search).then(function (response) {
         _this.showData = response.data.length == 0;
         _this.houses = response.data;
         _this.loading = false;
       });
     }
+  },
+  mounted: function mounted() {
+    this.getHouses();
   }
 });
 
@@ -161,10 +171,35 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "my-3 col-md-2" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search,
+              expression: "search",
+            },
+          ],
+          attrs: { type: "text", placeholder: "Name search..." },
+          domProps: { value: _vm.search },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "my-3 col-md-10" }, [_vm._v("slider")]),
+      _vm._v(" "),
       _c("div", { staticClass: "col-md-12" }, [
         !_vm.loading && !_vm.showData
-          ? _c("table", { staticClass: "mt-5 table table-bordered" }, [
+          ? _c("table", { staticClass: "table table-bordered" }, [
               _vm._m(0),
               _vm._v(" "),
               _c(

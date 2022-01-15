@@ -14,10 +14,10 @@ class HouseController extends Controller
      */
     public function index()
     {
-        $houses = House::with(['bedroom', 'bathroom', 'storey', 'garage'])->get();
-
+        $houses = House::housesQuery()->get();
         return response()->json($houses);
     }
+
 
     /**
      * Store a newly created resource in storage.
