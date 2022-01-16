@@ -4,7 +4,15 @@
       <div class="my-3 col-md-2">
         <input type="text" v-model="search" placeholder="Name search..." />
       </div>
-      <div class="my-3 col-md-10">slider</div>
+      <div class="my-3 col-md-10">
+        <el-slider
+          v-model="prices"
+          range
+          :min="0"
+          :max="1000000"
+          :marks="marks"
+        ></el-slider>
+      </div>
       <div class="col-md-12">
         <table class="table table-bordered" v-if="!loading && !showData">
           <thead>
@@ -47,10 +55,27 @@ export default {
       loading: false,
       showData: false,
       search: "",
+      prices: [200000, 600000],
+      marks: {
+        0: "0",
+        100000: "100,000",
+        200000: "200,000",
+        300000: "300,000",
+        400000: "400,000",
+        500000: "500,000",
+        600000: "600,000",
+        700000: "700,000",
+        800000: "800,000",
+        900000: "900,000",
+        1000000: "1000,000",
+      },
     };
   },
   watch: {
     search: function (value) {
+      return this.getHouses();
+    },
+    prices: function (startPrice, endPrice) {
       return this.getHouses();
     },
   },
@@ -58,11 +83,20 @@ export default {
     getHouses() {
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses?q=" + this.search).then((response) => {
-        this.showData = response.data.length == 0;
-        this.houses = response.data;
-        this.loading = false;
-      });
+      this.axios
+        .get(
+          "/api/houses?q=" +
+            this.search +
+            "&startPrice=" +
+            this.prices[0] +
+            "&endPrice=" +
+            this.prices[1]
+        )
+        .then((response) => {
+          this.showData = response.data.length == 0;
+          this.houses = response.data;
+          this.loading = false;
+        });
     },
   },
   mounted() {

@@ -7,11 +7,11 @@ export default new Router({
     {
       path: '/houses',
       name: 'Houses',
-      component: () => import(/* webpackChunkName "houses" */ "./components/Houses.vue")
+      component: () => import(/* webpackChunkName "houses" */ "./pages/Houses.vue")
     },
     {
       path: '/',
-      component: () => import(/* webpackChunkName "elhouses" */ "./components/ElHouses.vue")
+      component: () => import(/* webpackChunkName "elhouses" */ "./pages/ElHouses.vue")
     }
   ]
 })

@@ -44,6 +44,15 @@ class House extends Model
     public function scopeHousesQuery($query)
     {
         $search_term = request('q', '');
-        $query->with(['bedroom', 'bathroom', 'storey', 'garage'])->search(trim($search_term))->get();
+
+        $startPrice = request('startPrice');
+        $endPrice = request('endPrice');
+        $query->with(['bedroom', 'bathroom', 'storey', 'garage'])
+            ->when($startPrice, function ($query) use ($startPrice) {
+                $query->where('price', '>', $startPrice);
+            })
+            ->when($endPrice, function ($query) use ($endPrice) {
+                $query->where('price', '<', $endPrice);
+            })->search(trim($search_term))->get();
     }
 }
