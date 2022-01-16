@@ -45,7 +45,19 @@
                   </option>
                 </select>
               </th>
-              <th>Storeys</th>
+              <th>
+                Storeys
+                <select v-model="selectedStorey">
+                  <option value="" selected>all qty.</option>
+                  <option
+                    v-for="storey in storeys"
+                    :key="storey.id"
+                    :value="storey.id"
+                  >
+                    {{ storey.quantity }}
+                  </option>
+                </select>
+              </th>
               <th>Garages</th>
             </tr>
           </thead>
@@ -80,6 +92,8 @@ export default {
       selectedBedroom: "",
       bathrooms: [],
       selectedBathroom: "",
+      storeys: [],
+      selectedStorey: "",
       loading: false,
       showData: false,
       search: "",
@@ -112,6 +126,9 @@ export default {
     selectedBathroom: function (value) {
       return this.getHouses();
     },
+    selectedStorey: function (value) {
+      return this.getHouses();
+    },
   },
   methods: {
     getHouses() {
@@ -128,7 +145,9 @@ export default {
             "&selectedBedroom=" +
             this.selectedBedroom +
             "&selectedBathroom=" +
-            this.selectedBathroom
+            this.selectedBathroom +
+            "&selectedStorey=" +
+            this.selectedStorey
         )
         .then((response) => {
           this.showData = response.data.length == 0;
@@ -144,6 +163,9 @@ export default {
     this.axios
       .get("api/bathrooms")
       .then((response) => (this.bathrooms = response.data));
+    this.axios
+      .get("api/storeys")
+      .then((response) => (this.storeys = response.data));
     this.getHouses();
   },
 };

@@ -84,6 +84,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -92,6 +104,8 @@ __webpack_require__.r(__webpack_exports__);
       selectedBedroom: "",
       bathrooms: [],
       selectedBathroom: "",
+      storeys: [],
+      selectedStorey: "",
       loading: false,
       showData: false,
       search: "",
@@ -123,6 +137,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectedBathroom: function selectedBathroom(value) {
       return this.getHouses();
+    },
+    selectedStorey: function selectedStorey(value) {
+      return this.getHouses();
     }
   },
   methods: {
@@ -131,7 +148,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom + "&selectedBathroom=" + this.selectedBathroom).then(function (response) {
+      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom + "&selectedBathroom=" + this.selectedBathroom + "&selectedStorey=" + this.selectedStorey).then(function (response) {
         _this.showData = response.data.length == 0;
         _this.houses = response.data;
         _this.loading = false;
@@ -146,6 +163,9 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.axios.get("api/bathrooms").then(function (response) {
       return _this2.bathrooms = response.data;
+    });
+    this.axios.get("api/storeys").then(function (response) {
+      return _this2.storeys = response.data;
     });
     this.getHouses();
   }
@@ -399,7 +419,57 @@ var render = function () {
                     ),
                   ]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Storeys")]),
+                  _c("th", [
+                    _vm._v("\n              Storeys\n              "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedStorey,
+                            expression: "selectedStorey",
+                          },
+                        ],
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.selectedStorey = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "", selected: "" } }, [
+                          _vm._v("all qty."),
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.storeys, function (storey) {
+                          return _c(
+                            "option",
+                            { key: storey.id, domProps: { value: storey.id } },
+                            [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(storey.quantity) +
+                                  "\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                      ],
+                      2
+                    ),
+                  ]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Garages")]),
                 ]),
