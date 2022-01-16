@@ -21,8 +21,8 @@
               <th>Price</th>
               <th>
                 Bedrooms
-                <select v-model="selectedBedroom" class="form-select">
-                  <option value="" selected>All quantity</option>
+                <select v-model="selectedBedroom">
+                  <option value="" selected>all qty.</option>
                   <option
                     v-for="bedroom in bedrooms"
                     :key="bedroom.id"
@@ -32,7 +32,19 @@
                   </option>
                 </select>
               </th>
-              <th>Bathrooms</th>
+              <th>
+                Bathrooms
+                <select v-model="selectedBathroom">
+                  <option value="" selected>all qty.</option>
+                  <option
+                    v-for="bathroom in bathrooms"
+                    :key="bathroom.id"
+                    :value="bathroom.id"
+                  >
+                    {{ bathroom.quantity }}
+                  </option>
+                </select>
+              </th>
               <th>Storeys</th>
               <th>Garages</th>
             </tr>
@@ -66,6 +78,8 @@ export default {
       houses: [],
       bedrooms: [],
       selectedBedroom: "",
+      bathrooms: [],
+      selectedBathroom: "",
       loading: false,
       showData: false,
       search: "",
@@ -95,6 +109,9 @@ export default {
     selectedBedroom: function (value) {
       return this.getHouses();
     },
+    selectedBathroom: function (value) {
+      return this.getHouses();
+    },
   },
   methods: {
     getHouses() {
@@ -109,7 +126,9 @@ export default {
             "&endPrice=" +
             this.prices[1] +
             "&selectedBedroom=" +
-            this.selectedBedroom
+            this.selectedBedroom +
+            "&selectedBathroom=" +
+            this.selectedBathroom
         )
         .then((response) => {
           this.showData = response.data.length == 0;
@@ -122,6 +141,9 @@ export default {
     this.axios
       .get("api/bedrooms")
       .then((response) => (this.bedrooms = response.data));
+    this.axios
+      .get("api/bathrooms")
+      .then((response) => (this.bathrooms = response.data));
     this.getHouses();
   },
 };

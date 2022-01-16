@@ -72,12 +72,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       houses: [],
       bedrooms: [],
       selectedBedroom: "",
+      bathrooms: [],
+      selectedBathroom: "",
       loading: false,
       showData: false,
       search: "",
@@ -106,6 +120,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectedBedroom: function selectedBedroom(value) {
       return this.getHouses();
+    },
+    selectedBathroom: function selectedBathroom(value) {
+      return this.getHouses();
     }
   },
   methods: {
@@ -114,7 +131,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom).then(function (response) {
+      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom + "&selectedBathroom=" + this.selectedBathroom).then(function (response) {
         _this.showData = response.data.length == 0;
         _this.houses = response.data;
         _this.loading = false;
@@ -126,6 +143,9 @@ __webpack_require__.r(__webpack_exports__);
 
     this.axios.get("api/bedrooms").then(function (response) {
       return _this2.bedrooms = response.data;
+    });
+    this.axios.get("api/bathrooms").then(function (response) {
+      return _this2.bathrooms = response.data;
     });
     this.getHouses();
   }
@@ -282,7 +302,6 @@ var render = function () {
                             expression: "selectedBedroom",
                           },
                         ],
-                        staticClass: "form-select",
                         on: {
                           change: function ($event) {
                             var $$selectedVal = Array.prototype.filter
@@ -301,7 +320,7 @@ var render = function () {
                       },
                       [
                         _c("option", { attrs: { value: "", selected: "" } }, [
-                          _vm._v("All quantity"),
+                          _vm._v("all qty."),
                         ]),
                         _vm._v(" "),
                         _vm._l(_vm.bedrooms, function (bedroom) {
@@ -325,7 +344,60 @@ var render = function () {
                     ),
                   ]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Bathrooms")]),
+                  _c("th", [
+                    _vm._v("\n              Bathrooms\n              "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedBathroom,
+                            expression: "selectedBathroom",
+                          },
+                        ],
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.selectedBathroom = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "", selected: "" } }, [
+                          _vm._v("all qty."),
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.bathrooms, function (bathroom) {
+                          return _c(
+                            "option",
+                            {
+                              key: bathroom.id,
+                              domProps: { value: bathroom.id },
+                            },
+                            [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(bathroom.quantity) +
+                                  "\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                      ],
+                      2
+                    ),
+                  ]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Storeys")]),
                   _vm._v(" "),
