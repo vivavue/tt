@@ -51,6 +51,8 @@ class House extends Model
         $selectedBathroom = request('selectedBathroom');
         $selectedStorey = request('selectedStorey');
         $selectedGarage = request('selectedGarage');
+        $sort_direction = request('sort_direction', 'desc');
+        $sort_field = request('sort_field', 'name');
         $query->with(['bedroom', 'bathroom', 'storey', 'garage'])
             ->when($startPrice, function ($query) use ($startPrice) {
                 $query->where('price', '>', $startPrice);
@@ -70,6 +72,8 @@ class House extends Model
             ->when($selectedGarage, function ($query) use ($selectedGarage) {
                 $query->where('garage_id', $selectedGarage);
             })
-            ->search(trim($search_term))->get();
+            ->search(trim($search_term))
+
+            ->orderBy($sort_field, $sort_direction);
     }
 }

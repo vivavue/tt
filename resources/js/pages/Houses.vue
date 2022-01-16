@@ -17,7 +17,16 @@
         <table class="table table-bordered" v-if="!loading && !showData">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>
+                <a href="#" @click.prevent="change_sort('name')">Name</a>
+
+                <span v-if="sort_direction == 'desc' && sort_field == 'name'"
+                  >&uarr;</span
+                >
+                <span v-if="sort_direction == 'asc' && sort_field == 'name'"
+                  >&darr;</span
+                >
+              </th>
               <th>Price</th>
               <th>
                 Bedrooms
@@ -125,6 +134,8 @@ export default {
         900000: "900,000",
         1000000: "1000,000",
       },
+      sort_direction: "desc",
+      sort_field: "name",
     };
   },
   watch: {
@@ -148,6 +159,14 @@ export default {
     },
   },
   methods: {
+    change_sort(field) {
+      if (this.sort_field == field) {
+        this.sort_direction = this.sort_direction == "asc" ? "desc" : "asc";
+      } else {
+        this.sort_field = field;
+      }
+      this.getHouses();
+    },
     getHouses() {
       this.loading = true;
       this.showData = false;
@@ -166,7 +185,11 @@ export default {
             "&selectedStorey=" +
             this.selectedStorey +
             "&selectedGarage=" +
-            this.selectedGarage
+            this.selectedGarage +
+            "&sort_direction=" +
+            this.sort_direction +
+            "&sort_field" +
+            this.sort_field
         )
         .then((response) => {
           this.showData = response.data.length == 0;
@@ -177,16 +200,16 @@ export default {
   },
   mounted() {
     this.axios
-      .get("api/bedrooms")
+      .get("/api/bedrooms")
       .then((response) => (this.bedrooms = response.data));
     this.axios
-      .get("api/bathrooms")
+      .get("/api/bathrooms")
       .then((response) => (this.bathrooms = response.data));
     this.axios
-      .get("api/storeys")
+      .get("/api/storeys")
       .then((response) => (this.storeys = response.data));
     this.axios
-      .get("api/garages")
+      .get("/api/garages")
       .then((response) => (this.garages = response.data));
     this.getHouses();
   },

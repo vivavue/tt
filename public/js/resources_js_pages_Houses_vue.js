@@ -108,6 +108,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -136,7 +145,9 @@ __webpack_require__.r(__webpack_exports__);
         800000: "800,000",
         900000: "900,000",
         1000000: "1000,000"
-      }
+      },
+      sort_direction: "desc",
+      sort_field: "name"
     };
   },
   watch: {
@@ -160,12 +171,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    change_sort: function change_sort(field) {
+      if (this.sort_field == field) {
+        this.sort_direction = this.sort_direction == "asc" ? "desc" : "asc";
+      } else {
+        this.sort_field = field;
+      }
+
+      this.getHouses();
+    },
     getHouses: function getHouses() {
       var _this = this;
 
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom + "&selectedBathroom=" + this.selectedBathroom + "&selectedStorey=" + this.selectedStorey + "&selectedGarage=" + this.selectedGarage).then(function (response) {
+      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom + "&selectedBathroom=" + this.selectedBathroom + "&selectedStorey=" + this.selectedStorey + "&selectedGarage=" + this.selectedGarage + "&sort_direction=" + this.sort_direction + "&sort_field" + this.sort_field).then(function (response) {
         _this.showData = response.data.length == 0;
         _this.houses = response.data;
         _this.loading = false;
@@ -175,16 +195,16 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    this.axios.get("api/bedrooms").then(function (response) {
+    this.axios.get("/api/bedrooms").then(function (response) {
       return _this2.bedrooms = response.data;
     });
-    this.axios.get("api/bathrooms").then(function (response) {
+    this.axios.get("/api/bathrooms").then(function (response) {
       return _this2.bathrooms = response.data;
     });
-    this.axios.get("api/storeys").then(function (response) {
+    this.axios.get("/api/storeys").then(function (response) {
       return _this2.storeys = response.data;
     });
-    this.axios.get("api/garages").then(function (response) {
+    this.axios.get("/api/garages").then(function (response) {
       return _this2.garages = response.data;
     });
     this.getHouses();
@@ -325,7 +345,29 @@ var render = function () {
           ? _c("table", { staticClass: "table table-bordered" }, [
               _c("thead", [
                 _c("tr", [
-                  _c("th", [_vm._v("Name")]),
+                  _c("th", [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.change_sort("name")
+                          },
+                        },
+                      },
+                      [_vm._v("Name")]
+                    ),
+                    _vm._v(" "),
+                    _vm.sort_direction == "desc" && _vm.sort_field == "name"
+                      ? _c("span", [_vm._v("↑")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.sort_direction == "asc" && _vm.sort_field == "name"
+                      ? _c("span", [_vm._v("↓")])
+                      : _vm._e(),
+                  ]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Price")]),
                   _vm._v(" "),

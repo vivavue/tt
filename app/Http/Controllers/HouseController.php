@@ -18,7 +18,6 @@ class HouseController extends Controller
         return response()->json($houses);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
