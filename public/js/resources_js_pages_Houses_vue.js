@@ -117,6 +117,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -369,7 +378,29 @@ var render = function () {
                       : _vm._e(),
                   ]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Price")]),
+                  _c("th", [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.change_sort("price")
+                          },
+                        },
+                      },
+                      [_vm._v("Price")]
+                    ),
+                    _vm._v(" "),
+                    _vm.sort_direction == "desc" && _vm.sort_field == "price"
+                      ? _c("span", [_vm._v("↑")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.sort_direction == "asc" && _vm.sort_field == "price"
+                      ? _c("span", [_vm._v("↓")])
+                      : _vm._e(),
+                  ]),
                   _vm._v(" "),
                   _c("th", [
                     _vm._v("\n              Bedrooms\n              "),

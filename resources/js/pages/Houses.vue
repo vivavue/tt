@@ -27,7 +27,16 @@
                   >&darr;</span
                 >
               </th>
-              <th>Price</th>
+              <th>
+                <a href="#" @click.prevent="change_sort('price')">Price</a>
+
+                <span v-if="sort_direction == 'desc' && sort_field == 'price'"
+                  >&uarr;</span
+                >
+                <span v-if="sort_direction == 'asc' && sort_field == 'price'"
+                  >&darr;</span
+                >
+              </th>
               <th>
                 Bedrooms
                 <select v-model="selectedBedroom">
