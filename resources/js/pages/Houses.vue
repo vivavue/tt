@@ -58,7 +58,19 @@
                   </option>
                 </select>
               </th>
-              <th>Garages</th>
+              <th>
+                Garages
+                <select v-model="selectedGarage">
+                  <option value="" selected>all qty.</option>
+                  <option
+                    v-for="garage in garages"
+                    :key="garage.id"
+                    :value="garage.id"
+                  >
+                    {{ garage.quantity }}
+                  </option>
+                </select>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -94,6 +106,8 @@ export default {
       selectedBathroom: "",
       storeys: [],
       selectedStorey: "",
+      garages: [],
+      selectedGarage: "",
       loading: false,
       showData: false,
       search: "",
@@ -129,6 +143,9 @@ export default {
     selectedStorey: function (value) {
       return this.getHouses();
     },
+    selectedGarage: function (valus) {
+      return this.getHouses();
+    },
   },
   methods: {
     getHouses() {
@@ -147,7 +164,9 @@ export default {
             "&selectedBathroom=" +
             this.selectedBathroom +
             "&selectedStorey=" +
-            this.selectedStorey
+            this.selectedStorey +
+            "&selectedGarage=" +
+            this.selectedGarage
         )
         .then((response) => {
           this.showData = response.data.length == 0;
@@ -166,6 +185,9 @@ export default {
     this.axios
       .get("api/storeys")
       .then((response) => (this.storeys = response.data));
+    this.axios
+      .get("api/garages")
+      .then((response) => (this.garages = response.data));
     this.getHouses();
   },
 };
