@@ -60,10 +60,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       houses: [],
+      bedrooms: [],
+      selectedBedroom: "",
       loading: false,
       showData: false,
       search: "",
@@ -89,6 +103,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     prices: function prices(startPrice, endPrice) {
       return this.getHouses();
+    },
+    selectedBedroom: function selectedBedroom(value) {
+      return this.getHouses();
     }
   },
   methods: {
@@ -97,7 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.showData = false;
-      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1]).then(function (response) {
+      this.axios.get("/api/houses?q=" + this.search + "&startPrice=" + this.prices[0] + "&endPrice=" + this.prices[1] + "&selectedBedroom=" + this.selectedBedroom).then(function (response) {
         _this.showData = response.data.length == 0;
         _this.houses = response.data;
         _this.loading = false;
@@ -105,6 +122,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this2 = this;
+
+    this.axios.get("api/bedrooms").then(function (response) {
+      return _this2.bedrooms = response.data;
+    });
     this.getHouses();
   }
 });
@@ -241,7 +263,75 @@ var render = function () {
       _c("div", { staticClass: "col-md-12" }, [
         !_vm.loading && !_vm.showData
           ? _c("table", { staticClass: "table table-bordered" }, [
-              _vm._m(0),
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Name")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Price")]),
+                  _vm._v(" "),
+                  _c("th", [
+                    _vm._v("\n              Bedrooms\n              "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedBedroom,
+                            expression: "selectedBedroom",
+                          },
+                        ],
+                        staticClass: "form-select",
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.selectedBedroom = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { value: "", selected: "" } }, [
+                          _vm._v("All quantity"),
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.bedrooms, function (bedroom) {
+                          return _c(
+                            "option",
+                            {
+                              key: bedroom.id,
+                              domProps: { value: bedroom.id },
+                            },
+                            [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(bedroom.quantity) +
+                                  "\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                      ],
+                      2
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Bathrooms")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Storeys")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Garages")]),
+                ]),
+              ]),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -283,28 +373,7 @@ var render = function () {
     ]),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Price")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Bedrooms")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Bathrooms")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Storeys")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Garages")]),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

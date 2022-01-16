@@ -47,12 +47,16 @@ class House extends Model
 
         $startPrice = request('startPrice');
         $endPrice = request('endPrice');
+        $selectedBedroom = request('selectedBedroom');
         $query->with(['bedroom', 'bathroom', 'storey', 'garage'])
             ->when($startPrice, function ($query) use ($startPrice) {
                 $query->where('price', '>', $startPrice);
             })
             ->when($endPrice, function ($query) use ($endPrice) {
                 $query->where('price', '<', $endPrice);
+            })
+            ->when($selectedBedroom, function ($query) use ($selectedBedroom) {
+                $query->where('bedroom_id', $selectedBedroom);
             })->search(trim($search_term))->get();
     }
 }

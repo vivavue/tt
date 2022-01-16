@@ -19,7 +19,19 @@
             <tr>
               <th>Name</th>
               <th>Price</th>
-              <th>Bedrooms</th>
+              <th>
+                Bedrooms
+                <select v-model="selectedBedroom" class="form-select">
+                  <option value="" selected>All quantity</option>
+                  <option
+                    v-for="bedroom in bedrooms"
+                    :key="bedroom.id"
+                    :value="bedroom.id"
+                  >
+                    {{ bedroom.quantity }}
+                  </option>
+                </select>
+              </th>
               <th>Bathrooms</th>
               <th>Storeys</th>
               <th>Garages</th>
@@ -52,6 +64,8 @@ export default {
   data: function () {
     return {
       houses: [],
+      bedrooms: [],
+      selectedBedroom: "",
       loading: false,
       showData: false,
       search: "",
@@ -78,6 +92,9 @@ export default {
     prices: function (startPrice, endPrice) {
       return this.getHouses();
     },
+    selectedBedroom: function (value) {
+      return this.getHouses();
+    },
   },
   methods: {
     getHouses() {
@@ -90,7 +107,9 @@ export default {
             "&startPrice=" +
             this.prices[0] +
             "&endPrice=" +
-            this.prices[1]
+            this.prices[1] +
+            "&selectedBedroom=" +
+            this.selectedBedroom
         )
         .then((response) => {
           this.showData = response.data.length == 0;
@@ -100,6 +119,9 @@ export default {
     },
   },
   mounted() {
+    this.axios
+      .get("api/bedrooms")
+      .then((response) => (this.bedrooms = response.data));
     this.getHouses();
   },
 };
